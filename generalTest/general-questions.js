@@ -15,7 +15,7 @@ const findCommon=(arr1,arr2)=>{
     }
     return commonElementsArray;
 }
-console.log("common elements are")
+console.log("\ncommon elements are")
 console.log(findCommon([1,2,3,1,3],[5,8,7,2,1,9,1]));
 
 //multiplication table
@@ -29,8 +29,11 @@ const mult=(multiplicant,limit)=>{
         console.log(multiplicant +"*"+ i +"="+(multiplicant*i));
     }
 }
-
+console.log('\nMultiplication table\n')
 mult(0,5);
+
+// question 3 : dont understand question properly. if you a sample output for the given input
+  //i can complete this question.
 
 //pattern
 
@@ -45,7 +48,11 @@ const pattern=(number)=>{
             array.push(number[l-j])
         }
         if(i===l){
-            console.log(array.join('.'));
+
+            const data=Object.assign([],number).slice(1);
+            
+
+            console.log(array.join('.')+'.'+data.join('.'));
             array=[];
             for(i=0;i<=l;i++){
                 for(j=0;j<l-i;j++){
@@ -61,6 +68,7 @@ const pattern=(number)=>{
     }
 }
 
+console.log('\nPattern\n')
 pattern("123456789");
 
 //question 5
@@ -80,6 +88,7 @@ p1.then(data=>{
     console.log(err);
 })
 
+//2: 
 const add=(a,b,callback)=>{
     let c=a+b;
     callback(c);
