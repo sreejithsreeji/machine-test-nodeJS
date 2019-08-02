@@ -17,10 +17,14 @@ app.use(bodyParser.urlencoded({extended:true}));
 const companyRoutes=require('./routes/company');
 const employeeRoutes=require('./routes/employees');
 const projectRoutes=require('./routes/projects');
+const userRoutes=require('./routes/user.js');
+const shopRoutes=require('./routes/shop.js');
 
 app.use('/companies',companyRoutes);
 app.use('/employees',employeeRoutes);
 app.use('/projects',projectRoutes);
+app.use('/users',userRoutes);
+app.use('/shops',shopRoutes);
 
 
 server.listen(`${process.env.PORT}`,()=>{
