@@ -122,13 +122,10 @@ This will start the server in **localhost:{PORT}**
      } 
      //validations added for all fields.
      // all fields are required and standard validations are added
-     // file uploading added using JOI
+     // file uploading added using multer
     
  
 
- ###  How things are working
+ ###  NOTE
     
-    
-       
-    
-    //all  modules are tested and working perfectly. Thank You       
+          
