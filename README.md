@@ -22,8 +22,8 @@ This will start the server in **localhost:{PORT}**
 #### Sample Request
 ###### UPDATE COMPANY DETAILS
   PUT http://localhost:3000/companies/{companyId}
-   sample request
-    PUT http://localhost:3000/companies/1
+  sample request
+  PUT http://localhost:3000/companies/1
 
      {
 	"name":"asdvgfff"
