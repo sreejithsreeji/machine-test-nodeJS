@@ -11,156 +11,124 @@ Machine Test NodeJS.
 create .env file using the format prescribed in the env.json	
 		
 ### Starting environment
- ### General Questions
+ ##### General Questions
     cd cocolabs/generalTest
     node general-questions.js
- ### Node JS APIs   
+ ##### Node JS APIs   
     cd cocolabs
     npm install -to install dependencies
     npm start
 This will start the server in **localhost:{PORT}**
 #### Sample Request
-###### REGISTER USER
-  POST http://localhost:4000/api/v1/auth/register
- 
-    BODY {
-    "email": "thesreejith@gmail.com",
-    "password": "Sreejith@13",
-    "firstname": "sreejith",
-    "lastname": "m",
-    "address": "abc"
-  }
+###### UPDATE COMPANY DETAILS
+  PUT http://localhost:3000/companies/{companyId}
+   sample request
+    PUT http://localhost:3000/companies/1
+
+     {
+	"name":"asdvgfff"
+    }
    ###### RESPONSE  
-   
     {
-    "status": true,
     "code": 201,
-    "message": "user registartion completed",
-    "token": "6590cdb11318547301b157fb768972e027aac3ebe2b670bc31f3db3a1466c955"
-     }
-    
+    "message": "Company details updated"
+    }
    
-  ###### LOGIN 
-   POST http://localhost:4000/api/v1/auth/login
+   
+  ###### ADD PROJECTS
+   POST http://localhost:3000/projects
    
         BODY {
-             "email":"m.srijti@gmail.com",
-             "password":"hai",
-             } 
+	"name":"gdfghfghfghf"
+    }
 
    ###### RESPONSE
       {
-         "status": true,
-         "code": 201,
-         "message": "login successfull",
-         "token": "2971a28a5ada95a5afa605f796a22538fee4cea1d84e05f7eb94a84d1fc4559e"
-    } 
+    "code": 201,
+    "message": "project details saved successfully"
+     } 
 
-######LOGOUT      
- **POST** http://localhost:4000/api/v1/auth/logout?email={email}
-    
-    sample request http://localhost:4000/api/v1/auth/logout?email=m.srijithsri@gmail.com
-    
-    response:{
-    "status": true,
-    "code": 200,
-    "message": "logout sucessfully"
-}
-      
-###  NOTES API SECTION
- ###### CREATE NOTE
-   POST http://localhost:4000/api/v1/notes 
-   
-    headers {
-        Authorization: Bearer <TOKEN HERE>
+######ADD EMPLOYEE      
+ **POST** http://localhost:3000/companies/add-employee
+
+       BODY {
+	"name":"gdfghfghfghf"
+    }
+
+    {
+    "code": 201,
+    "message": "employee details saved successfully"
+    }
+
+######Assiging projects to employee      
+ **POST** http://localhost:3000/projects/assign-employee
+
+       body {
+	"empId":"1",
+	"projectId":"2"
     }
     
-    BODY multipart/form-data
-     {
-         text:"new note",
-         image:"file ",
-         title:"title
-         }
+    {
+    "code": 200,
+    "message": "Record already exists"
+    }
+######DELETE A PROJECT     
+ **DEL** http://localhost:3000/projects/1
+
+    Response
+    {
+    "status": 200,
+    "message": "Project deleted successfully"
+    }  
+
+######GET LIST OF PROJECTS OF SPECIFIC EMPLOYEE     
+ **GET** http://localhost:3000/employees/2/projects
+
+ ######GET LIST OF EMPLOYEES OF SPECIFIC PROJECTS     
+ **GET** http://localhost:3000/projects/1/employees
+
+  ######GET combained list of employees and their projects     
+ **GET** http://localhost:3000/companies/projects
+   
+      
+###  APIs Releated to shops
+ ###### find distance between two shops
+   GET http://localhost:3000/shops/distance/find?source=1&dest=2
+   
  ###### response  
     {
-    "status": true,
-    "code": 201,
-    "message": "A new note is created"
+    "code": 200,
+    "message": "distance",
+    "unit": "km",
+    "result": "1.9 KM"
     }
-
- ##### UPDATE NOTE
-  PUT http://localhost:4000/api/v1/notes/{noteId}
-  
-    sample request http://localhost:4000/api/v1/notes/5
-    headers {
-        Authorization: Bearer <TOKEN HERE>
-    }
+###  APIs form handling
+ ###### Register user
+  **POST** http://localhost:3000/users/register
+   
     BODY multipart/form-data
      {
-         text:"new note",
-         image:"file ",
-         title:"title
+         name:"sreejith",
+         email:"abc@gmail.com",
+         phone:"9567122536",
+         image:"null"
          }
- ###### response 
-     {
-    "status": true,
-    "code": 200,
-    "message": "updated successfully"
-    }
 
-###### DELETE NOTE
-   DELETE http://localhost:4000/api/v1/notes/{noteId}
-   
-     headers {
-        Authorization: Bearer <TOKEN HERE>
-    }
-
-##### GET ALL NOTES CREATED BY A USER
-
-  GET http://localhost:4000/api/v1/notes/{userId}/created 
-     
-    sample request http://localhost:4000/api/v1/notes/1/created
+ ###### response  
+    {
+    "staus": true,
+    "code": 201,
+    "message": "user registration completed"
+     } 
+     //validations added for all fields.
+     // all fields are required and standard validations are added
+     // file uploading added using JOI
     
-     headers {
-        Authorization: Bearer <TOKEN HERE>
-    }
- ###### RESPONSE
-    response: [{
-         id:1,
-         title:'a',
-         ...
-     }]
+ 
 
  ###  How things are working
     
     
-     Here iam using a single server which responsible for handling all data.
-     First,
-       User register himself by providing basic details,all details are requires.
-       here iam added input validations using JOI library.
-       all basic validation schemes are statisfied.after registration system provide a unique TOKEN for the user.and user need to store this token in their local storage(production).we set a expre duration for this token.after expiration you need to login again.
-     LOGIN: by providing email,and password you can login to syatem,you will be provided with new token too.
-
-     LOGOUT:
-        here we remove the token and make token invalid.no additional request will be entertained.so you need tpo login again to get a new token.
-        this way iam handle the authentication.
-
-        In producation we can use JWT token instead of this.
-
-     NOTES SECTION:
-      Only authenticated users can read,write,delete the notes.
-      This is achevied by adding token as a header to the each routes.
-      here iam add a middleware to check token is valid,if valid control passed.so only authenticated user can enter the system.
-      so in notes section you should pass token in header.
-
-    Here iam using mysql as database. 
-     first you need to copy the mysql dump file and create a database in your system.
-
-     Nb: File uploading is added (only .jpeg and max file size 2 MB),
-         User input validation added in register section.
-
-     Ps: I didn't understand why it need a 3 server for handling this.So i approached this problen with this way.
-     If you are strictly looking to build the sytem in mentioned way (by using 3 servers) please let me know.
-     I can change this code in that way too easeily.     
+       
     
     //all  modules are tested and working perfectly. Thank You       
